@@ -3,10 +3,8 @@
 ### How to setup :
 ##### 1 : install dependencies
 > pip install -r requirement.txt
-##### 2 : Launch main.py (choose to put verbose=True or verbose=False to have printed execution)
+##### 2 : Launch main.py 
 > python main.py
-##### Else : execute cells of global_notebook_colab.ipynb (for the graphical version upload it to colab to test it)
-###### A améliorer : add graphical version using pygame without colab requirement
 
 ### Présentation de cette solution au sujet des feux de forêt
 Basée sur les systèmes multi agents, et notamment sur les automates cellulaires.
