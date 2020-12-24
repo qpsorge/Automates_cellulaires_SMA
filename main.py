@@ -15,23 +15,9 @@ percentage_apparition = 80
 percentage_alea_burning = 1
 percentage_neighbor_burning = 60
 percentage_neighbor_birth = 60
-# Blanc, Noir, Gris
-#__colors__ = [(255,255,255),(0,0,0),(140,140,140)]
+
 #BVR Blanc Vert Rouge
 __colors__ = [(255,255,255),(0,200,0),(200,0,0)]
-
-
-glidergun=[
-  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1],
-  [0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1],
-  [1,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-  [1,1,0,0,0,0,0,0,0,0,1,0,0,0,1,0,1,1,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]
 
 def getColorCell(n):
     return __colors__[n]
@@ -108,37 +94,10 @@ class Scene:
                         getColorCell(self._grid._grid.item((x,y))),
                         (x*__cellSize__ + 1, y*__cellSize__ + 1, __cellSize__-2, __cellSize__-2))
 
-
     def drawText(self, text, position, color = (255,64,64)):
         self._screen.blit(self._font.render(text,1,color),position)
 
-    def update(self):
-        '''B234/S rule'''
-        for c, s in self._grid.sumEnumerate():
-            self._grid._gridbis[c[0], c[1]] = 1 if (2 <= s <= 4) and self._grid._grid[c[0],c[1]] == 0 else 0 
-        self._grid._grid = np.copy(self._grid._gridbis)
-
-    def updatebis(self):
-        for c, s in self._grid.sumEnumerate():
-            if self._grid._grid[c[0],c[1]] == 1:
-                ret = 2 <= s <= 3 
-            else:
-                ret = s == 3
-            self._grid._gridbis[c[0], c[1]] = 1 if ret else 0
-        self._grid._grid = np.copy(self._grid._gridbis)
-
     def updateBrain(self,percentage_neighbor_burning=percentage_neighbor_burning,percentage_alea_burning=percentage_alea_burning,percentage_neighbor_birth=percentage_neighbor_birth):
-        """
-        for c, s in self._grid.sumEnumerate():
-            if self._grid._grid[c[0],c[1]] == 2: # gris devient blanc : mort
-                ret = 0
-            elif self._grid._grid[c[0],c[1]] == 1: # noir devient gris: malade
-                ret = 2
-            else: # blanc devient noir si 2 voisins : naissance
-                ret = 1 if s == 2 else 0
-            self._grid._gridbis[c[0], c[1]] = ret
-        self._grid._grid = np.copy(self._grid._gridbis)
-        """
         for c, s in self._grid.sumEnumerate():
             if self._grid._grid[c[0],c[1]] == 2: # Rouge devient Blanc : Mort
                 ret = 0
@@ -154,16 +113,6 @@ class Scene:
             self._grid._gridbis[c[0], c[1]] = ret
         self._grid._grid = np.copy(self._grid._gridbis)
 
-    def updateRule(self, B, S):
-        # Maze is B3/S12345
-        ''' Many rules in https://www.conwaylife.com/wiki/List_of_Life-like_cellular_automata '''
-        for c, s in self._grid.sumEnumerate():
-            if self._grid._grid[c[0],c[1]] == 1:
-                ret = s in S
-            else:
-                ret = s in B
-            self._grid._gridbis[c[0], c[1]] = 1 if ret else 0
-        self._grid._grid = np.copy(self._grid._gridbis)
 
 
     def eventClic(self, coord, b):
@@ -174,9 +123,9 @@ class Scene:
 
 def main():
     statis = {}
-    for percentage_neighbor_burning in [i*10 for i in range(10)]:
-        for percentage_neighbor_birth in [i*10 for i in range(10)]:
-            for percentage_alea_burning in [i*10 for i in range(10)]:
+    for percentage_neighbor_burning in [1]:#i*10 for i in range(10)]:
+        for percentage_neighbor_birth in [1]:#i*10 for i in range(10)]:
+            for percentage_alea_burning in [1]:#i*10 for i in range(10)]:
                 scene = Scene()
                 clock = pygame.time.Clock()
                 ticks=0
@@ -202,7 +151,7 @@ def main():
                         done=True
                         index= f"neighbor_burning_{percentage_neighbor_burning}--neighbor_birth_{percentage_neighbor_birth}--alea_burning_{percentage_alea_burning}"
                         statis[index] = np.mean(stats)
-    json.dump(statis, open("simulation_ac_feu.json","w"))
+    #json.dump(statis, open("simulation_ac_feu.json","w"))
     print(statis)
     pygame.quit()
 
