@@ -1,6 +1,8 @@
-json
+re
+pandas
 numpy
 pygame
 sys
 math
 random
+json

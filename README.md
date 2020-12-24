@@ -2,7 +2,7 @@
 
 ### How to setup :
 ##### 1 : install dependencies
-> pip install -r requirement.txt
+> pip install -r requirements.txt
 ##### 2 : Launch main.py 
 > python main.py
 
